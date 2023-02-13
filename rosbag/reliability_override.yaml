@@ -1,0 +1,62 @@
+# reliability_override.yaml
+
+/aideck/image:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/actuator_command/pose:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/actuator_command/thrust:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/actuator_command/twist:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/controller/info:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/motion_reference/pose:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/motion_reference/twist:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/platform/info:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/self_localization/pose:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/self_localization/twist:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/sensor_measurements/battery:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/sensor_measurements/imu:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/cf/sensor_measurements/odom:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/tf:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
+/tf_static:
+  reliability: best_effort
+  history: keep_all
+  depth: 5
