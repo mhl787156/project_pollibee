@@ -5,32 +5,38 @@ drone_namespace=$1
 if [ -z "$drone_namespace" ]; then
     drone_namespace="cf"
 fi
-cf_uri=$2
-if [ -z "$cf_uri" ]; then
-    cf_uri="radio://0/80/2M/E7E7E7E7E7"
+run_platform=$2
+if [ -z "$run_platform" ]; then
+    run_platform="false"
 fi
-run_mocap=$3
-if [ -z "$run_mocap" ]; then
-    run_mocap="false"
+using_optitrack=$3
+if [ -z "$using_optitrack" ]; then
+    using_optitrack="false"
 fi
 
-behavior_type="trajectory" # "position" or "trajectory"
+behavior_type="position" # "position" or "trajectory"
 launch_bt="false" # "true" or "false"
-using_optitrack="false" # "true" or "false"
-cf_uri="radio://0/80/2M/E7E7E7E703"
-aideck_ip="192.168.0.140"
-aideck_port="5000"
 
 source ./utils/launch_tools.bash
 
 new_session $drone_namespace
 
-new_window 'platform' "ros2 launch as2_platform_crazyflie crazyflie_platform_launch.py \
-    drone_id:=$drone_namespace \
-    drone_URI:=$cf_uri \
-    estimator_type:=2 \
-    controller_type:=1"
+new_window 'alphanumeric_viewer' "ros2 run as2_alphanumeric_viewer as2_alphanumeric_viewer_node \
+    --ros-args -r  __ns:=/$drone_namespace"
 
+if [[ "$run_platform" == "true" ]]
+then
+    new_window 'platform' "ros2 launch as2_platform_crazyflie crazyflie_swarm_launch.py \
+        drone_id:=$drone_namespace \
+        estimator_type:=2 \
+        controller_type:=1 \
+        swarm_config_file:=config/crazy_swarm.yaml"
+
+    if [[ "$using_optitrack" == "true" ]]
+    then
+        new_window 'mocap' "ros2 launch mocap_optitrack mocap.launch.py  namespace:=$drone_namespace"
+    fi
+fi
 
 new_window 'controller' "ros2 launch as2_controller controller_launch.py \
     namespace:=$drone_namespace \
@@ -43,10 +49,6 @@ new_window 'controller' "ros2 launch as2_controller controller_launch.py \
 
 if [[ "$using_optitrack" == "true" ]]
 then
-    if [ "$run_mocap" = "true" ]; then
-        new_window 'mocap' "ros2 launch mocap_optitrack mocap.launch.py  namespace:=$drone_namespace"
-    fi
-
     new_window 'state_estimator' "ros2 launch as2_state_estimator state_estimator_launch.py \
         namespace:=$state_estimator \
         plugin_name:=mocap"
@@ -68,9 +70,6 @@ then
     new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
         namespace:=$drone_namespace"
 fi
-
-new_window 'alphanumeric_viewer' "ros2 run as2_alphanumeric_viewer as2_alphanumeric_viewer_node \
-    --ros-args -r  __ns:=/$drone_namespace"
 
 if [[ "$launch_bt" == "true" ]] 
 then
