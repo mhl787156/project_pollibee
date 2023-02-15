@@ -6,6 +6,7 @@ import threading
 from typing import List
 import math
 import rclpy
+from gates import Gates
 from tf2_ros.buffer_interface import TransformRegistration
 from tf2_geometry_msgs import PointStamped, TransformStamped
 from as2_python_api.drone_interface import DroneInterface
@@ -25,17 +26,26 @@ drone_turn = 0
 t_gate_0 = TransformStamped()
 t_gate_1 = TransformStamped()
 
-position_gate_0 = [-1.5, 1.0, 1.9]
-position_gate_1 = [2.5, 1.0, 1.9]
+# position_gate_0 = [-1.5, 1.0, 1.9, 0.0, 0.0, 0.0, 0.0]
+# position_gate_1 = [2.5, 1.0, 1.9, 0.0, 0.0, 0.0, 0.0]
+gates_node = Gates()
 
-initial_pose_0 = [0.5, 3.0]
-initial_pose_1 = [0.5, -1.0]
+rclpy.spin_once(gates_node)
+position_gate_0 = gates_node.get_gate_0_pose()
+position_gate_1 = gates_node.get_gate_1_pose()
+
+position_gate_0[2] = 2.0
+position_gate_1[2] = 2.0
+
+print(position_gate_0)
+print(position_gate_1)
+
+gates_node.shutdown()
 
 h_dist = math.sqrt((position_gate_0[0] - position_gate_1[0])
                    ** 2 + (position_gate_0[1] - position_gate_1[1])**2)
 
-v_dist = math.sqrt((initial_pose_0[0] - initial_pose_1[0])
-                   ** 2 + (initial_pose_0[1] - initial_pose_1[1])**2)
+v_dist = 4.0
 
 initial_point_rel_gate_0 = [h_dist/2,
                             -v_dist/2, 0.0]
@@ -55,7 +65,7 @@ else:
 
 
 drones_ns = [
-    'cf0', 'cf1']
+    'cf0']
 
 path_gate_0 = []
 path_gate_1 = []
@@ -71,8 +81,8 @@ def gates_transforms():
     t_gate_0.transform.translation.z = position_gate_0[2]
     t_gate_0.transform.rotation.x = 0.0
     t_gate_0.transform.rotation.y = 0.0
-    t_gate_0.transform.rotation.z = 0.0
-    t_gate_0.transform.rotation.w = 0.0
+    t_gate_0.transform.rotation.z = position_gate_0[5]
+    t_gate_0.transform.rotation.w = position_gate_0[6]
 
     t_gate_1.header.frame_id = 'earth'
     t_gate_1.child_frame_id = 'gate_1'
@@ -81,8 +91,8 @@ def gates_transforms():
     t_gate_1.transform.translation.z = position_gate_1[2]
     t_gate_1.transform.rotation.x = 0.0
     t_gate_1.transform.rotation.y = 0.0
-    t_gate_1.transform.rotation.z = 0.0
-    t_gate_1.transform.rotation.w = 0.0
+    t_gate_1.transform.rotation.z = position_gate_1[5]
+    t_gate_1.transform.rotation.w = position_gate_1[6]
 
 
 def list_to_point(_l: list):
@@ -181,7 +191,7 @@ def follow_path(drone_interface: DroneInterface):
 def go_to(drone_interface: DroneInterface):
     if (drone_interface.drone_id == drones_ns[0]):
         point = initial_point_rel_gate_0
-    if (drone_interface.drone_id == drones_ns[1]):
+    elif (drone_interface.drone_id == drones_ns[1]):
         point = initial_point_rel_gate_1
     drone_interface.goto.go_to_point(
         point=point, speed=speed
@@ -227,7 +237,7 @@ def print_status(drone_interface: DroneInterface):
 
 if __name__ == '__main__':
 
-    rclpy.init()
+    # rclpy.init()
     uavs = []
     for ns in drones_ns:
         uavs.append(DroneInterface(ns, verbose=False))
