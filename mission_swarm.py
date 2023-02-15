@@ -12,10 +12,10 @@ from as2_python_api.drone_interface import DroneInterface
 
 # pos= [[1,0,1],[-1,1,1.5],[-1,-1,2.0]]
 
-speed = 1.0
+speed = 2.0
 ingore_yaw = True
 height = 2.2
-desp_gates = 0.5
+desp_gates = 0.0
 
 drone_turn = 0
 
@@ -25,11 +25,11 @@ drone_turn = 0
 t_gate_0 = TransformStamped()
 t_gate_1 = TransformStamped()
 
-position_gate_0 = [0.0, 1.0]
-position_gate_1 = [3.0, 1.0]
+position_gate_0 = [-1.5, 1.0, 1.9]
+position_gate_1 = [2.5, 1.0, 1.9]
 
-initial_pose_0 = [1.5, 0.0]
-initial_pose_1 = [1.5, 2.0]
+initial_pose_0 = [0.5, 3.0]
+initial_pose_1 = [0.5, -1.0]
 
 h_dist = math.sqrt((position_gate_0[0] - position_gate_1[0])
                    ** 2 + (position_gate_0[1] - position_gate_1[1])**2)
@@ -42,15 +42,20 @@ initial_point_rel_gate_0 = [h_dist/2,
 
 initial_point_rel_gate_1 = [-h_dist/2,
                             v_dist/2, 0.0]
+if desp_gates != 0.0:
 
-poses_rel_gate_0 = [[0.0, -desp_gates,
-                     0.0], [0.0, desp_gates, 0.0]]
-poses_rel_gate_1 = [[0.0, desp_gates,
-                     0.0], [0.0, -desp_gates, 0.0]]
+    poses_rel_gate_0 = [[0.0, -desp_gates,
+                        0.0], [0.0, desp_gates, 0.0]]
+    poses_rel_gate_1 = [[0.0, desp_gates,
+                        0.0], [0.0, -desp_gates, 0.0]]
+else:
+
+    poses_rel_gate_0 = [[0.0, 0.0, 0.0]]
+    poses_rel_gate_1 = [[0.0, 0.0, 0.0]]
+
 
 drones_ns = [
-    'cf0',
-    'cf1']
+    'cf0', 'cf1']
 
 path_gate_0 = []
 path_gate_1 = []
@@ -63,7 +68,7 @@ def gates_transforms():
     t_gate_0.child_frame_id = 'gate_0'
     t_gate_0.transform.translation.x = position_gate_0[0]
     t_gate_0.transform.translation.y = position_gate_0[1]
-    t_gate_0.transform.translation.z = 2.2
+    t_gate_0.transform.translation.z = position_gate_0[2]
     t_gate_0.transform.rotation.x = 0.0
     t_gate_0.transform.rotation.y = 0.0
     t_gate_0.transform.rotation.z = 0.0
@@ -73,7 +78,7 @@ def gates_transforms():
     t_gate_1.child_frame_id = 'gate_1'
     t_gate_1.transform.translation.x = position_gate_1[0]
     t_gate_1.transform.translation.y = position_gate_1[1]
-    t_gate_1.transform.translation.z = 2.2
+    t_gate_1.transform.translation.z = position_gate_1[2]
     t_gate_1.transform.rotation.x = 0.0
     t_gate_1.transform.rotation.y = 0.0
     t_gate_1.transform.rotation.z = 0.0
@@ -109,8 +114,8 @@ def transform_waypoints_from_gates_to_earth():
     initial_point_rel_gate_1 = point_to_list(do_transform(
         list_to_point(initial_point_rel_gate_1), t_gate_1))
 
-    path_gate_0.append(initial_point_rel_gate_0)
-    path_gate_1.append(initial_point_rel_gate_1)
+    # path_gate_0.append(initial_point_rel_gate_0)
+    # path_gate_1.append(initial_point_rel_gate_1)
 
     for point in poses_rel_gate_0:
         path_gate_0.append(point_to_list(
@@ -145,7 +150,13 @@ def takeoff(uav: DroneInterface):
 
 
 def land(drone_interface: DroneInterface):
-    drone_interface.land(0.4)
+    # position = drone_interface.position
+    # land_position = [
+    #     position[0],
+    #     position[1],
+    #     0.2
+    # ]
+    drone_interface.land(0.5)
 
 
 def follow_path(drone_interface: DroneInterface):
@@ -163,7 +174,7 @@ def follow_path(drone_interface: DroneInterface):
 
     drone_interface.follow_path.follow_path_with_keep_yaw(
         path=path, speed=speed)
-    # drone_interface.goto.go_to_point_path_facing(
+    # drone_interface.goto.go_to_point_path_facing(o
     #     pose_generator(drone_interface), speed=speed)
 
 
@@ -172,7 +183,7 @@ def go_to(drone_interface: DroneInterface):
         point = initial_point_rel_gate_0
     if (drone_interface.drone_id == drones_ns[1]):
         point = initial_point_rel_gate_1
-    drone_interface.goto.go_to_point_path_facing(
+    drone_interface.goto.go_to_point(
         point=point, speed=speed
     )
 
@@ -221,29 +232,28 @@ if __name__ == '__main__':
     for ns in drones_ns:
         uavs.append(DroneInterface(ns, verbose=False))
 
-    print("Takeoff")
-    confirm(uavs, "Takeoff")
-    run_func(uavs, takeoff)
     print("Initial transformations")
     gates_transforms()
     transform_waypoints_from_gates_to_earth()
+    print("Takeoff")
+    if confirm(uavs, "Takeoff"):
+        run_func(uavs, takeoff)
     print("Initial Go To")
-    confirm(uavs, "Go To")
-    go_to_uavs(uavs)
+    if confirm(uavs, "Go To"):
+        go_to_uavs(uavs)
     print("Follow Path")
-    confirm(uavs, "Follow Path")
-    follow_path_uavs(uavs)
+    if confirm(uavs, "Follow Path"):
+        follow_path_uavs(uavs)
     drone_turn = 1
     while confirm(uavs, "Replay"):
         follow_path_uavs(uavs)
         drone_turn = abs(drone_turn) - 1
 
     print("Land")
-    confirm(uavs, "Land")
-    run_func(uavs, land)
+    if confirm(uavs, "Land"):
+        run_func(uavs, land)
 
     print("Shutdown")
-    confirm(uavs, "Shutdown")
     rclpy.shutdown()
 
     exit(0)

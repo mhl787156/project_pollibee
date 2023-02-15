@@ -28,13 +28,17 @@ if [[ "$run_platform" == "true" ]]
 then
     new_window 'platform' "ros2 launch as2_platform_crazyflie crazyflie_swarm_launch.py \
         drone_id:=$drone_namespace \
+        external_odom_topic:=self_localization/pose \
+        external_odom:=$using_optitrack \
         estimator_type:=2 \
         controller_type:=1 \
         swarm_config_file:=config/crazy_swarm.yaml"
 
     if [[ "$using_optitrack" == "true" ]]
     then
-        new_window 'mocap' "ros2 launch mocap_optitrack mocap.launch.py  namespace:=$drone_namespace"
+        new_window 'mocap' "ros2 launch mocap_optitrack mocap.launch.py  \
+        namespace:=optitrack \
+        config_file:=config/mocap.yaml"
     fi
 fi
 
@@ -50,7 +54,7 @@ new_window 'controller' "ros2 launch as2_controller controller_launch.py \
 if [[ "$using_optitrack" == "true" ]]
 then
     new_window 'state_estimator' "ros2 launch as2_state_estimator state_estimator_launch.py \
-        namespace:=$state_estimator \
+        namespace:=$drone_namespace \
         plugin_name:=mocap"
 else
     new_window 'state_estimator' "ros2 launch as2_state_estimator state_estimator_launch.py \
@@ -60,16 +64,20 @@ fi
 
 new_window 'behaviors' "ros2 launch as2_behaviors_motion motion_behaviors_launch.py \
     namespace:=$drone_namespace \
-    follow_path_plugin_name:=follow_path_plugin_$behavior_type \
+    follow_path_plugin_name:=follow_path_plugin_trajectory \
     goto_plugin_name:=goto_plugin_$behavior_type \
     takeoff_plugin_name:=takeoff_plugin_$behavior_type \
-    land_plugin_name:=land_plugin_speed"
+    land_plugin_name:=land_plugin_speed \
+    follow_path_threshold:=0.3"
 
-if [[ "$behavior_type" == "trajectory" ]]
-then
-    new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
+new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
         namespace:=$drone_namespace"
-fi
+
+# if [[ "$behavior_type" == "trajectory" ]]
+# then
+#     new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
+#         namespace:=$drone_namespace"
+# fi
 
 if [[ "$launch_bt" == "true" ]] 
 then
