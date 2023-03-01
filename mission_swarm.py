@@ -13,10 +13,14 @@ from as2_python_api.drone_interface import DroneInterface
 
 # pos= [[1,0,1],[-1,1,1.5],[-1,-1,2.0]]
 
-speed = 2.0
+speed = 2.5
 ingore_yaw = True
 height = 2.2
-desp_gates = 0.0
+desp_gates = 0.5
+
+
+drones_ns = [
+    'cf0', 'cf1']
 
 drone_turn = 0
 
@@ -34,8 +38,11 @@ rclpy.spin_once(gates_node)
 position_gate_0 = gates_node.get_gate_0_pose()
 position_gate_1 = gates_node.get_gate_1_pose()
 
-position_gate_0[2] = 2.0
-position_gate_1[2] = 2.0
+# position_gate_0[2] = 2.0
+# position_gate_1[2] = 2.0
+
+position_gate_0[2] += 0.6
+position_gate_1[2] += 0.7
 
 print(position_gate_0)
 print(position_gate_1)
@@ -63,9 +70,6 @@ else:
     poses_rel_gate_0 = [[0.0, 0.0, 0.0]]
     poses_rel_gate_1 = [[0.0, 0.0, 0.0]]
 
-
-drones_ns = [
-    'cf0']
 
 path_gate_0 = []
 path_gate_1 = []

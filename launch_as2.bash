@@ -64,20 +64,20 @@ fi
 
 new_window 'behaviors' "ros2 launch as2_behaviors_motion motion_behaviors_launch.py \
     namespace:=$drone_namespace \
-    follow_path_plugin_name:=follow_path_plugin_$behavior_type \
+    follow_path_plugin_name:=follow_path_plugin_trajectory \
     goto_plugin_name:=goto_plugin_$behavior_type \
     takeoff_plugin_name:=takeoff_plugin_$behavior_type \
     land_plugin_name:=land_plugin_speed \
     follow_path_threshold:=0.3"
 
-# new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
-#         namespace:=$drone_namespace"
-
-if [[ "$behavior_type" == "trajectory" ]]
-then
-    new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
+new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
         namespace:=$drone_namespace"
-fi
+
+# if [[ "$behavior_type" == "trajectory" ]]
+# then
+#     new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
+#         namespace:=$drone_namespace"
+# fi
 
 if [[ "$launch_bt" == "true" ]] 
 then
