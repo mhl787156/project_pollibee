@@ -13,9 +13,9 @@
 
 # cf0:
 #   uri: radio://0/80/2M/E7E7E7E709
-cf1:
-  uri: radio://0/80/2M/E7E7E7E710
+# cf1:
+#   uri: radio://0/80/2M/E7E7E7E710
 cf0:
   uri: radio://0/80/2M/E7E7E7E711
-# cf1:
-#   uri: radio://0/80/2M/E7E7E7E712
+cf1:
+  uri: radio://0/80/2M/E7E7E7E712

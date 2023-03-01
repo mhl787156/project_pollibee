@@ -42,20 +42,20 @@ then
     fi
 fi
 
-new_window 'controller' "ros2 launch as2_controller controller_launch.py \
+new_window 'controller' "ros2 launch as2_motion_controller controller_launch.py \
     namespace:=$drone_namespace \
     use_sim_time:=false \
     cmd_freq:=100.0 \
     info_freq:=10.0 \
     use_bypass:=false \
-    plugin_name:=speed_controller \
+    plugin_name:=pid_speed_controller \
     plugin_config_file:=drone_config/controller.yaml"
 
 if [[ "$using_optitrack" == "true" ]]
 then
     new_window 'state_estimator' "ros2 launch as2_state_estimator state_estimator_launch.py \
         namespace:=$drone_namespace \
-        plugin_name:=mocap"
+        plugin_name:=mocap_pose"
 else
     new_window 'state_estimator' "ros2 launch as2_state_estimator state_estimator_launch.py \
         namespace:=$drone_namespace \
@@ -65,12 +65,13 @@ fi
 new_window 'behaviors' "ros2 launch as2_behaviors_motion motion_behaviors_launch.py \
     namespace:=$drone_namespace \
     follow_path_plugin_name:=follow_path_plugin_trajectory \
-    goto_plugin_name:=goto_plugin_$behavior_type \
+    go_to_plugin_name:=go_to_plugin_$behavior_type \
     takeoff_plugin_name:=takeoff_plugin_$behavior_type \
     land_plugin_name:=land_plugin_speed \
-    follow_path_threshold:=0.3"
+    follow_path_threshold:=0.3 \
+    land_speed_condition_percentage:=0.4"
 
-new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generator dynamic_polynomial_generator_launch.py  \
+new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generation generate_polynomial_trajectory_behavior_launch.py  \
         namespace:=$drone_namespace"
 
 # if [[ "$behavior_type" == "trajectory" ]]

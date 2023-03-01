@@ -7,6 +7,7 @@ from typing import List
 import math
 import rclpy
 from gates import Gates
+from copy import deepcopy
 from tf2_ros.buffer_interface import TransformRegistration
 from tf2_geometry_msgs import PointStamped, TransformStamped
 from as2_python_api.drone_interface import DroneInterface
@@ -198,7 +199,7 @@ def go_to(drone_interface: DroneInterface):
         point = initial_point_rel_gate_0
     elif (drone_interface.drone_id == drones_ns[1]):
         point = initial_point_rel_gate_1
-    drone_interface.goto.go_to_point(
+    drone_interface.go_to.go_to_point(
         point=point, speed=speed
     )
 
@@ -237,8 +238,9 @@ def go_to_uavs(uavs):
 
 def join_paths(uavs):
     global path_gate_0, path_gate_1
+    path_gate_0_tmp = deepcopy(path_gate_0)
     path_gate_0.extend(path_gate_1)
-    path_gate_1.extend(path_gate_0)
+    path_gate_1.extend(path_gate_0_tmp)
     print(path_gate_0)
     print(path_gate_1)
     confirm(uavs, 'Confirm joined paths')
@@ -246,7 +248,7 @@ def join_paths(uavs):
 
 def print_status(drone_interface: DroneInterface):
     while (True):
-        drone_interface.get_logger().info(str(drone_interface.goto.status))
+        drone_interface.get_logger().info(str(drone_interface.go_to.status))
 
 
 if __name__ == '__main__':
@@ -276,7 +278,8 @@ if __name__ == '__main__':
             join_paths(uavs)
 
         follow_path_uavs(uavs)
-        drone_turn = abs(drone_turn) - 1
+        if join_counter < 2:
+            drone_turn = abs(drone_turn) - 1
 
     print("Land")
     if confirm(uavs, "Land"):
