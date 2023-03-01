@@ -7,8 +7,7 @@ from rclpy.qos import qos_profile_sensor_data, qos_profile_system_default
 class Gates(Node):
 
     def __init__(self):
-        rclpy.init()
-        super().__init__('gates')
+        super().__init__('gates_node')
 
         self.pose_0_sub = self.create_subscription(
             PoseStamped, '/gate_0/ground_truth/pose', self.gate_0_callback, qos_profile_sensor_data)
@@ -20,7 +19,6 @@ class Gates(Node):
         self.gate_1_pose = PoseStamped()
         self.wait_pose_0 = False
         self.wait_pose_1 = False
-        rclpy.spin_once(self)
 
     def gate_0_callback(self, pose_msg: PoseStamped):
         self.gate_0_pose = pose_msg
@@ -32,7 +30,8 @@ class Gates(Node):
 
     def get_gate_0_pose(self):
         while (not self.wait_pose_0):
-            pass
+            rclpy.spin_once(self)
+
         ret = [self.gate_0_pose.pose.position.x, self.gate_0_pose.pose.position.y,
                self.gate_0_pose.pose.position.z, self.gate_0_pose.pose.orientation.x,
                self.gate_0_pose.pose.orientation.y, self.gate_0_pose.pose.orientation.z,
@@ -42,7 +41,8 @@ class Gates(Node):
 
     def get_gate_1_pose(self):
         while (not self.wait_pose_1):
-            pass
+            rclpy.spin_once(self)
+
         ret = [self.gate_1_pose.pose.position.x, self.gate_1_pose.pose.position.y,
                self.gate_1_pose.pose.position.z, self.gate_1_pose.pose.orientation.x,
                self.gate_1_pose.pose.orientation.y, self.gate_1_pose.pose.orientation.z,

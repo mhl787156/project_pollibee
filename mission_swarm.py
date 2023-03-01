@@ -13,6 +13,8 @@ from as2_python_api.drone_interface import DroneInterface
 
 # pos= [[1,0,1],[-1,1,1.5],[-1,-1,2.0]]
 
+rclpy.init()
+
 speed = 2.5
 ingore_yaw = True
 height = 2.2
@@ -34,7 +36,6 @@ t_gate_1 = TransformStamped()
 # position_gate_1 = [2.5, 1.0, 1.9, 0.0, 0.0, 0.0, 0.0]
 gates_node = Gates()
 
-rclpy.spin_once(gates_node)
 position_gate_0 = gates_node.get_gate_0_pose()
 position_gate_1 = gates_node.get_gate_1_pose()
 
@@ -234,6 +235,15 @@ def go_to_uavs(uavs):
     return
 
 
+def join_paths(uavs):
+    global path_gate_0, path_gate_1
+    path_gate_0.extend(path_gate_1)
+    path_gate_1.extend(path_gate_0)
+    print(path_gate_0)
+    print(path_gate_1)
+    confirm(uavs, 'Confirm joined paths')
+
+
 def print_status(drone_interface: DroneInterface):
     while (True):
         drone_interface.get_logger().info(str(drone_interface.goto.status))
@@ -259,7 +269,12 @@ if __name__ == '__main__':
     if confirm(uavs, "Follow Path"):
         follow_path_uavs(uavs)
     drone_turn = 1
+    join_counter = 0
     while confirm(uavs, "Replay"):
+        join_counter += 1
+        if join_counter == 2:
+            join_paths(uavs)
+
         follow_path_uavs(uavs)
         drone_turn = abs(drone_turn) - 1
 
