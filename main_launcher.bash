@@ -6,7 +6,7 @@ drone_namespaces=('cf0' 'cf1')
 
 using_optitrack="true"
 
-# # Run the program with index 0
+# Run the program with index 0
 ./launch_as2.bash "${drone_namespaces[0]}" true $using_optitrack
 # Run the program with index 1
 ./launch_as2.bash "${drone_namespaces[1]}" false $using_optitrack

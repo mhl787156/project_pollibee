@@ -24,6 +24,8 @@ desp_gates = 0.5
 
 drones_ns = [
     'cf0', 'cf1']
+# drones_ns = [
+#     'cf0']
 
 drone_turn = 0
 
@@ -243,7 +245,6 @@ def join_paths(uavs):
     path_gate_1.extend(path_gate_0_tmp)
     print(path_gate_0)
     print(path_gate_1)
-    confirm(uavs, 'Confirm joined paths')
 
 
 def print_status(drone_interface: DroneInterface):

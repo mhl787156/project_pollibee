@@ -69,6 +69,7 @@ new_window 'behaviors' "ros2 launch as2_behaviors_motion motion_behaviors_launch
     takeoff_plugin_name:=takeoff_plugin_$behavior_type \
     land_plugin_name:=land_plugin_speed \
     follow_path_threshold:=0.3 \
+    land_speed_condition_height:=0.2 \
     land_speed_condition_percentage:=0.4"
 
 new_window 'traj_generator' "ros2 launch as2_behaviors_trajectory_generation generate_polynomial_trajectory_behavior_launch.py  \
