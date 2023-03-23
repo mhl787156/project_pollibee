@@ -2,11 +2,12 @@
 
 drone_namespaces=('drone_sim_0' 'drone_sim_1')
 simulation_config="simulation_config/swarm.json"
+simulation_mode="true"
 
 # For each drone namespace
 for drone_namespace in "${drone_namespaces[@]}"
 do
-    ./as2_launch.bash "${drone_namespace}" $simulation_config
+    ./../as2_launch.bash $simulation_mode "${drone_namespace}" $simulation_config
 done
 
 # Attach to the first session

@@ -2,14 +2,17 @@
 
 # bash script to run the program
 # Arguments
+
 drone_namespaces=('cf0' 'cf1')
 
-using_optitrack="true"
+using_optitrack="false"
+
+simulation_mode="false"
 
 # Run the program with index 0
-./launch_as2.bash "${drone_namespaces[0]}" true $using_optitrack
+./as2_launch.bash $simulation_mode "${drone_namespaces[0]}" true $using_optitrack
 # Run the program with index 1
-./launch_as2.bash "${drone_namespaces[1]}" false $using_optitrack
+./as2_launch.bash $simulation_mode "${drone_namespaces[1]}" false $using_optitrack
 
 
 # Run the program with index 1

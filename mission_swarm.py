@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import sys
+import argparse
 import time
 import threading
 from typing import List
@@ -13,45 +14,43 @@ from tf2_geometry_msgs import PointStamped, TransformStamped
 from as2_python_api.drone_interface import DroneInterface
 
 # pos= [[1,0,1],[-1,1,1.5],[-1,-1,2.0]]
+parser=argparse.ArgumentParser(description="Starts gates mission for crazyswarm in either simulation or real environment")
+parser.add_argument('-s', '--simulated', action='store_true', default=False)
 
 rclpy.init()
 
-speed = 2.5
+speed = 1.0
 ingore_yaw = True
 height = 2.2
 desp_gates = 0.5
 
+if parser.parse_args().simulated:
+    print ("Running mission in simulation mode")
+    drones_ns = [
+        'drone_sim_0', 'drone_sim_1']
+    position_gate_0 = [0.0, 1.0, 2.0, 0.0, 0.0, 0.0, 1.57] # position and orientation
+    position_gate_1 = [3.0, 1.0, 2.0, 0.0, 0.0, 0.0, 1.57] # position and orientation
+else:
+    print ("Running mission in real mode")
+    drones_ns = [
+        'cf0', 'cf1']
+    gates_node = Gates()
 
-drones_ns = [
-    'cf0', 'cf1']
-# drones_ns = [
-#     'cf0']
+    position_gate_0 = gates_node.get_gate_0_pose()
+    position_gate_1 = gates_node.get_gate_1_pose()
+
+    position_gate_0[2] += 0.6
+    position_gate_1[2] += 0.7
+
+    print(position_gate_0)
+    print(position_gate_1)
+
+    gates_node.shutdown()
 
 drone_turn = 0
 
-# gate_1_pose = PoseStamped()
-# gate_2_pose = PoseStamped()
-
 t_gate_0 = TransformStamped()
 t_gate_1 = TransformStamped()
-
-# position_gate_0 = [-1.5, 1.0, 1.9, 0.0, 0.0, 0.0, 0.0]
-# position_gate_1 = [2.5, 1.0, 1.9, 0.0, 0.0, 0.0, 0.0]
-gates_node = Gates()
-
-position_gate_0 = gates_node.get_gate_0_pose()
-position_gate_1 = gates_node.get_gate_1_pose()
-
-# position_gate_0[2] = 2.0
-# position_gate_1[2] = 2.0
-
-position_gate_0[2] += 0.6
-position_gate_1[2] += 0.7
-
-print(position_gate_0)
-print(position_gate_1)
-
-gates_node.shutdown()
 
 h_dist = math.sqrt((position_gate_0[0] - position_gate_1[0])
                    ** 2 + (position_gate_0[1] - position_gate_1[1])**2)
