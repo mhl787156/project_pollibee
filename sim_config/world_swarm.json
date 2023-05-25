@@ -5,8 +5,8 @@
             "model_type": "quadrotor_base",
             "model_name": "cf0",
             "xyz": [
-                1.5,
-                -1.0,
+                0.0,
+                -1.5,
                 0.3
             ],
             "rpy": [
@@ -20,8 +20,8 @@
             "model_type": "quadrotor_base",
             "model_name": "cf1",
             "xyz": [
+                0.0,
                 1.5,
-                3.0,
                 0.3
             ],
             "rpy": [
@@ -37,14 +37,14 @@
             "model_type": "aruco_gate_1",
             "model_name": "gate_0",
             "xyz": [
+                -1.0,
                 0.0,
-                1.0,
                 0.0
             ],
             "rpy": [
                 0,
                 0,
-                1.57
+                -1.57
             ],
             "object_bridges": [
                 "pose"
@@ -54,8 +54,8 @@
             "model_type": "aruco_gate_2",
             "model_name": "gate_1",
             "xyz": [
-                3.0,
-                1.0,
+                2.0,
+                0.0,
                 0.0
             ],
             "rpy": [

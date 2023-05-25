@@ -6,4 +6,7 @@ objects:
 - type: pose
   frame: gate_1
   pose_topic: "/gate_1/gate_1/pose"
+- type: pose
+  frame: gate_2
+  pose_topic: "/gate_2/gate_2/pose"
   

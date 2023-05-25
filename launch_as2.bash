@@ -67,7 +67,7 @@ drone_namespace=${drone_namespace:="cf"}
 
 if [[ ${swarm} == "true" ]]; then
   num_drones=2
-  simulation_config="sim_config/world_swarm.json"
+  simulation_config="sim_config/world_swarm_v2.json"
 else
   num_drones=1
   simulation_config="sim_config/world.json"

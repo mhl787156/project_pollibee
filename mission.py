@@ -8,108 +8,208 @@ from typing import List
 import rclpy
 from as2_python_api.drone_interface import DroneInterface
 
-parser=argparse.ArgumentParser(description="Starts gates mission for crazyswarm in either simulation or real environment")
-parser.add_argument('-s', '--simulated', action='store_true', default=False)
+SPEED = 1.0 # Speed of the drone
+INGORE_YAW = True # Yaw mode
 
-speed = 1.0
-ingore_yaw = True
-height = 2.2
-desp_gates = 0.5
-v_dist = 3.0
 
-initial_point_rel_gate_0 = [-v_dist/2, 0.0, 2.0]
+def shutdown_all(uavs):
+    """ Shutdown all uavs """
+    print("Exiting...")
+    for uav in uavs:
+        uav.shutdown()
+    sys.exit(1)
 
-initial_point_rel_gate_1 = [v_dist/2, 0.0, 2.0]
+def takeoff(uav: DroneInterface):
+    """ Takeoff the drone """
+    uav.arm()
+    uav.offboard()
+    uav.takeoff(2.0, 0.7)
+    time.sleep(1)
 
-if desp_gates != 0.0:
-    path_0 = [{"gate_0":[-desp_gates, 0.0, 2.0]}, {"gate_0":[desp_gates, 0.0 ,2.0]}, {"gate_1": initial_point_rel_gate_1}]
-    path_1 = [{"gate_1":[desp_gates, 0.0, 2.0]}, {"gate_1":[-desp_gates, 0.0 ,2.0]}, {"gate_0": initial_point_rel_gate_0}]
 
-else:
-    path_0 = [{"gate_0":[0.0, 0.0 , 2.0]}, {"gate_1": initial_point_rel_gate_1}]
-    path_1 = [{"gate_1":[0.0, 0.0 , 2.0]}, {"gate_0": initial_point_rel_gate_0}]
+def land(drone_interface: DroneInterface):
+    """ Land the drone """
+    drone_interface.land(0.5)
 
-def confirm(uav: DroneInterface, msg: str = 'Continue') -> bool:
+
+def go_to(drone_interface: DroneInterface, go_to_point: List, frame_id: str):
+    """ Go to a point """
+    drone_interface.go_to.go_to_point_path_facing(
+        point=go_to_point, speed=SPEED, frame_id=frame_id)
+
+
+def follow_path(drone_interface: DroneInterface, path: List, frame_id: str):
+    """ Follow a path """
+    drone_interface.follow_path(path, speed=SPEED, ignore_yaw=INGORE_YAW, frame_id=frame_id)
+
+
+def initial_go_to_drones(drone_interface: DroneInterface, drones_namespaces_list: List, paths: List):
+    """ Initial go to for all drones """
+    # Get index of drone interface in list of drone interfaces
+    drone_index = drones_namespaces_list.index(drone_interface.drone_id)
+    path_dict = paths[drone_index]
+    path_frame_id = list(path_dict.keys())[0]
+    path_value = paths[drone_index][path_frame_id][0]
+
+    go_to(drone_interface, path_value, frame_id=path_frame_id)
+
+
+def follow_path_drones(drone_interface: DroneInterface, drones_namespaces_list: List, paths: List):
+    """ Follow path for all drones """
+    drone_index = drones_namespaces_list.index(drone_interface.drone_id)
+
+    # Sort paths from drone_index to the end and from the beginning to drone_index
+    paths_to_do = []
+    for i in range(drone_index, len(paths)):
+        paths_to_do.append(paths[i])
+    for i in range(0, drone_index):
+        paths_to_do.append(paths[i])
+
+    for path in paths_to_do:
+        path_frame_id = list(path.keys())[0]
+        path_value = path[path_frame_id]
+        follow_path(drone_interface, path_value, frame_id=path_frame_id)
+        # for waypoint in path_value:
+        #     go_to(drone_interface, waypoint, frame_id=path_frame_id)
+
+
+def confirm(msg: str = 'Continue') -> bool:
+    """ Ask for confirmation """
     confirmation = input(f"{msg}? (y/n): ")
     if confirmation == "y":
         return True
-    elif confirmation == "n":
-        return False
-    else:
-        uav.shutdown()
+    return False
 
-def follow_path_with_go_to(drone_interface: DroneInterface):
-    for frame_dict in path_0:
-        for frame, point in frame_dict.items():
-            drone_interface.go_to.go_to_point_path_facing(
-                point=point, speed=speed, frame_id=frame)
-    for frame_dict in path_1:
-        for frame, point in frame_dict.items():
-            drone_interface.go_to.go_to_point_path_facing(
-                point=point, speed=speed, frame_id=frame)
 
-def drone_run(drone_interface: DroneInterface):
+def run_func(drones_list: List[DroneInterface], func, *args):
+    """ Run a function in parallel """
+    threads = []
+    for drone in drones_list:
+        thread = threading.Thread(target=func, args=(drone, *args))
+        threads.append(thread)
+        thread.start()
+    print("Waiting for threads to finish...")
+    for thread in threads:
+        thread.join()
+    print("All done")
+
+
+def get_paths(
+        gates_namespaces: List,
+        gates_heights: List,
+        gates_desp_x: List,
+        gates_desp_y: List):
+    """ Get paths for all drones """
+
+    paths = []
+    for index, (gate_ns, gate_height, gate_desp_x, gate_desp_y) in enumerate(
+            zip(gates_namespaces, gates_heights, gates_desp_x, gates_desp_y)):
+        path = []
+        gate_points = [
+            [gate_desp_x, gate_desp_y, gate_height],  # Before
+            [0.0, 0.0, gate_height],                  # Center
+            [-gate_desp_x, gate_desp_y, gate_height], # After
+        ]
+
+        if gate_desp_x != 0.0 or gate_desp_y != 0.0:
+            path = [gate_points[0], gate_points[1], gate_points[2]]
+        else:
+            path = [gate_points[1]]
+
+        paths.append({gate_ns: path})
+    return paths
+
+
+def run_mission(
+        drones_interfaces,
+        gates_namespaces,
+        gates_heights,
+        gates_desp_x,
+        gates_desp_y):
     """ Run the mission """
 
-    speed = 0.5
-    takeoff_height = 1.0
-    height = 1.0
+    if len(drones_interfaces) > len(gates_namespaces):
+        print("Number of drones must be less or equal than number of gates")
+        return
 
-    print("Start mission")
+    if len(gates_namespaces) != len(gates_heights) != len(gates_desp_x) != len(gates_desp_y):
+        print("Number of gates must be equal to number of heights, desp_x and desp_y")
+        return
 
-    ##### ARM OFFBOARD #####
-    drone_interface.offboard()
-    drone_interface.arm()
+    paths = get_paths(
+        gates_namespaces,
+        gates_heights,
+        gates_desp_x,
+        gates_desp_y)
 
-    ##### TAKE OFF #####
-    if confirm(drone_interface, "Takeoff"):
-        print("Take Off")
-        drone_interface.takeoff(takeoff_height, speed=1.0)
+    drones_namespaces = []
+    for drones_interface in drones_interfaces:
+        drones_namespaces.append(drones_interface.drone_id)
+
+    print("Takeoff")
+    if confirm("Takeoff"):
+        run_func(drones_interfaces, takeoff)
         print("Take Off done")
 
-    print("Initial Go To")
-    if confirm(drone_interface, "Go To"):
-        drone_interface.go_to.go_to_point_path_facing(
-            point=initial_point_rel_gate_0, speed=speed, frame_id="gate_0")
-    print("Follow Path")
-    if confirm(drone_interface, "Follow Path"):
-        follow_path_with_go_to(drone_interface)
-    while confirm(drone_interface, "Replay"):
-        follow_path_with_go_to(drone_interface)
+        if confirm("Go To Initial"):
+            run_func(drones_interfaces, initial_go_to_drones, drones_namespaces, paths)
+            if confirm("Follow Path"):
+                run_func(drones_interfaces, follow_path_drones, drones_namespaces, paths)
+                print("Path done")
+                while confirm("Replay"):
+                    run_func(drones_interfaces, follow_path_drones, drones_namespaces, paths)
+                    print("Path done")
 
-    print("Land")
-    if confirm(drone_interface, "Land"):
-    ##### LAND #####
-        print("Landing")
-        drone_interface.land(speed=0.5)
-        print("Land done")
-
-    drone_interface.disarm()
+        print("Land")
+        if confirm("Land"):
+            run_func(drones_interfaces, land)
 
 
-if __name__ == '__main__':
+def main():
+    """ Main """
 
     parser = argparse.ArgumentParser(
         description="Starts gates mission for crazyswarm in either simulation or real environment")
     parser.add_argument('-s', '--simulated',
                         action='store_true', default=False)
 
-    args = parser.parse_args()
-
-    if args.simulated:
-        print("Mission running in simulation mode")
-    else:
-        print("Mission running in real mode")
+    input_args = parser.parse_args()
 
     rclpy.init()
 
-    uav = DroneInterface(drone_id="cf0", verbose=False,
-                         use_sim_time=args.simulated)
+    drones_namespaces = ['cf0']
+    drones = []
+    for namespace in drones_namespaces:
+        drones.append(
+            DroneInterface(
+                namespace,
+                verbose=False,
+                use_sim_time=input_args.simulated))
 
-    drone_run(uav)
+    # Gates
+    gates_namespaces = ['gate_0', 'gate_1', 'gate_2']
+    if input_args.simulated:
+        print("Mission running in simulation mode")
+        gates_heights = [2.0, 2.0, 2.0]
+    else:
+        print("Mission running in real mode")
+        gates_heights = [2.0, 2.0, 2.0]
+    gates_desp_x = [1.0, 1.0, 1.0]
+    gates_desp_y = [0.0, 0.0, 0.0]
 
-    uav.shutdown()
+    # Run mission
+    run_mission(
+        drones,
+        gates_namespaces,
+        gates_heights,
+        gates_desp_x,
+        gates_desp_y)
+
+    print("Shutdown")
+    shutdown_all(drones)
     rclpy.shutdown()
+    sys.exit(0)
 
-    print("Clean exit")
-    exit(0)
+
+if __name__ == '__main__':
+    main()
