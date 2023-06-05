@@ -28,13 +28,13 @@ def main():
                 use_sim_time=input_args.simulated))
 
     # Gates
-    gates_namespaces = ['gate_0', 'gate_1', 'gate_2']
+    gates_namespaces = ['gate_0', 'gate_1']
     if input_args.simulated:
         print("Mission running in simulation mode")
         gates_heights = [2.0, 2.0]
     else:
         print("Mission running in real mode")
-        gates_heights = [2.0, 2.0]
+        gates_heights = [0.8, 0.8]
     gates_desp_x = [1.0, 1.0]
     gates_desp_y = [0.0, 0.0]
 

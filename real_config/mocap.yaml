@@ -17,12 +17,12 @@
                 parent_frame_id: ""
             3:
                 pose: "/gate_0/ground_truth/pose"
-                pose2d: "/gate_0/ground_pose"
+                pose2d: "/Robot_3/ground_pose"
                 child_frame_id: ""
                 parent_frame_id: ""
             4:
                 pose: "/gate_1/ground_truth/pose"
-                pose2d: "/gate_1/ground_pose"
+                pose2d: "/Robot_4/ground_pose"
                 child_frame_id: ""
                 parent_frame_id: ""
         optitrack_config:

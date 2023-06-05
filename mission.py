@@ -40,8 +40,7 @@ def go_to(drone_interface: DroneInterface, go_to_point: List, frame_id: str):
 
 def follow_path(drone_interface: DroneInterface, path: List, frame_id: str):
     """ Follow a path """
-    drone_interface.follow_path(path, speed=SPEED, ignore_yaw=INGORE_YAW, frame_id=frame_id)
-
+    drone_interface.follow_path.follow_path_with_path_facing(path, speed=SPEED, frame_id=frame_id)
 
 def initial_go_to_drones(drone_interface: DroneInterface, drones_namespaces_list: List, paths: List):
     """ Initial go to for all drones """
@@ -187,15 +186,15 @@ def main():
                 use_sim_time=input_args.simulated))
 
     # Gates
-    gates_namespaces = ['gate_0', 'gate_1', 'gate_2']
+    gates_namespaces = ['gate_0', 'gate_1']
     if input_args.simulated:
         print("Mission running in simulation mode")
-        gates_heights = [2.0, 2.0, 2.0]
+        gates_heights = [2.0, 2.0]
     else:
         print("Mission running in real mode")
-        gates_heights = [2.0, 2.0, 2.0]
-    gates_desp_x = [1.0, 1.0, 1.0]
-    gates_desp_y = [0.0, 0.0, 0.0]
+        gates_heights = [0.8, 0.8]
+    gates_desp_x = [1.0, 1.0]
+    gates_desp_y = [0.0, 0.0]
 
     # Run mission
     run_mission(
