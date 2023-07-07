@@ -8,8 +8,8 @@ from typing import List
 import rclpy
 from as2_python_api.drone_interface import DroneInterface
 
-SPEED = 1.0 # Speed of the drone
-INGORE_YAW = True # Yaw mode
+SPEED = 1.0  # Speed of the drone
+INGORE_YAW = True  # Yaw mode
 
 
 def shutdown_all(uavs):
@@ -18,6 +18,7 @@ def shutdown_all(uavs):
     for uav in uavs:
         uav.shutdown()
     sys.exit(1)
+
 
 def takeoff(uav: DroneInterface):
     """ Takeoff the drone """
@@ -40,7 +41,9 @@ def go_to(drone_interface: DroneInterface, go_to_point: List, frame_id: str):
 
 def follow_path(drone_interface: DroneInterface, path: List, frame_id: str):
     """ Follow a path """
-    drone_interface.follow_path.follow_path_with_path_facing(path, speed=SPEED, frame_id=frame_id)
+    drone_interface.follow_path.follow_path_with_path_facing(
+        path, speed=SPEED, frame_id=frame_id)
+
 
 def initial_go_to_drones(drone_interface: DroneInterface, drones_namespaces_list: List, paths: List):
     """ Initial go to for all drones """
@@ -107,7 +110,7 @@ def get_paths(
         gate_points = [
             [gate_desp_x, gate_desp_y, gate_height],  # Before
             [0.0, 0.0, gate_height],                  # Center
-            [-gate_desp_x, gate_desp_y, gate_height], # After
+            [-gate_desp_x, gate_desp_y, gate_height],  # After
         ]
 
         if gate_desp_x != 0.0 or gate_desp_y != 0.0:
@@ -151,12 +154,15 @@ def run_mission(
         print("Take Off done")
 
         if confirm("Go To Initial"):
-            run_func(drones_interfaces, initial_go_to_drones, drones_namespaces, paths)
+            run_func(drones_interfaces, initial_go_to_drones,
+                     drones_namespaces, paths)
             if confirm("Follow Path"):
-                run_func(drones_interfaces, follow_path_drones, drones_namespaces, paths)
+                run_func(drones_interfaces, follow_path_drones,
+                         drones_namespaces, paths)
                 print("Path done")
                 while confirm("Replay"):
-                    run_func(drones_interfaces, follow_path_drones, drones_namespaces, paths)
+                    run_func(drones_interfaces, follow_path_drones,
+                             drones_namespaces, paths)
                     print("Path done")
 
         print("Land")
@@ -186,7 +192,7 @@ def main():
                 use_sim_time=input_args.simulated))
 
     # Gates
-    gates_namespaces = ['gate_0', 'gate_1']
+    gates_namespaces = ['gate_0/link', 'gate_1/link']
     if input_args.simulated:
         print("Mission running in simulation mode")
         gates_heights = [2.0, 2.0]
