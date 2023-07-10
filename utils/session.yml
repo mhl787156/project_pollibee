@@ -69,9 +69,13 @@ windows:
         - ros2 launch as2_behaviors_motion motion_behaviors_launch.py
             namespace:=<%= drone_namespace %>
             use_sim_time:=<%= simulation %>
+            follow_path_config_file:=<%= config_path %>/follow_path_config_file.yaml
             follow_path_plugin_name:=follow_path_plugin_<%= behavior_type %>
-            go_to_plugin_name:=go_to_plugin_position
-            takeoff_plugin_name:=takeoff_plugin_position
+            go_to_config_file:=<%= config_path %>/go_to_config_file.yaml
+            go_to_plugin_name:=go_to_plugin_<%= behavior_type %>
+            takeoff_config_file:=<%= config_path %>/takeoff_config_file.yaml
+            takeoff_plugin_name:=takeoff_plugin_<%= behavior_type %>
+            land_config_file:=<%= config_path %>/land_config_file.yaml
             land_plugin_name:=land_plugin_speed
         <%- if behavior_type == "trajectory" %>
         - ros2 launch as2_behaviors_trajectory_generation generate_polynomial_trajectory_behavior_launch.py
