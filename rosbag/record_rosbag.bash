@@ -18,8 +18,11 @@ rosbag_cmd="ros2 bag record"
 # Add topics and drone namespaces to the rosbag record command
 for drone_namespace in "${drone_namespaces[@]}"; do
   rosbag_cmd+=" /${drone_namespace}/platform/info \
+                /${drone_namespace}/controller/info \
                 /${drone_namespace}/self_localization/pose \
                 /${drone_namespace}/self_localization/twist \
+                /${drone_namespace}/motion_reference/pose \
+                /${drone_namespace}/motion_reference/twist \
                 /${drone_namespace}/actuator_command/twist"
 done
 

@@ -16,7 +16,16 @@ def generate_launch_description():
             get_package_share_directory('as2_viz'), 'launch'),
             '/as2_viz.launch.py']),
         launch_arguments={'rviz_config': rviz_config,
-                          'namespace': 'cf0', 'color': 'green',
+                          'namespace': 'cf0', 'color': 'green', 'use_sim_time': 'false',
+                          'record_length': LaunchConfiguration('record_length')}.items(),
+    )
+
+    drone_1 = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('as2_viz'), 'launch'),
+            '/as2_viz.launch.py']),
+        launch_arguments={'rviz': 'false',
+                          'namespace': 'cf1', 'color': 'red', 'use_sim_time': 'false',
                           'record_length': LaunchConfiguration('record_length')}.items(),
     )
 
@@ -33,7 +42,7 @@ def generate_launch_description():
         name='robot_state_publisher',
         namespace='gate_0',
         parameters=[
-            {'use_sim_time': True},
+            {'use_sim_time': False},
             {'robot_description': gate_desc}
         ]
     )
@@ -44,7 +53,7 @@ def generate_launch_description():
         name='robot_state_publisher',
         namespace='gate_1',
         parameters=[
-            {'use_sim_time': True},
+            {'use_sim_time': False},
             {'robot_description': gate_desc}
         ]
     )
@@ -53,6 +62,7 @@ def generate_launch_description():
         DeclareLaunchArgument('record_length', default_value='500',
                               description='Length for last poses.'),
         drone_0,
+        drone_1,
         gate_0_state_publisher,
         gate_1_state_publisher
     ])

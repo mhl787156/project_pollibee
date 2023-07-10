@@ -1,2 +1,4 @@
 rosbags/*
 *.csv
+*/__pycache__
+*/rosbags

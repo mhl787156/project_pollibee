@@ -1,9 +1,9 @@
 ---
 objects:
 - type: pose
-  frame: gate_0
+  frame: gate_0/link
   pose_topic: "/gate_0/ground_truth/pose"
 - type: pose
-  frame: gate_1
+  frame: gate_1/link
   pose_topic: "/gate_1/ground_truth/pose"
   
