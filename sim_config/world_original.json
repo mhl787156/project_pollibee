@@ -19,8 +19,8 @@
     ],
     "objects": [
         {
-            "model_type": "flower",
-            "model_name": "flower_0",
+            "model_type": "aruco_gate_1",
+            "model_name": "gate_0",
             "xyz": [
                 -1.0,
                 0.0,
@@ -30,6 +30,23 @@
                 0,
                 0,
                 -1.57
+            ],
+            "object_bridges": [
+                "pose"
+            ]
+        },
+        {
+            "model_type": "aruco_gate_2",
+            "model_name": "gate_1",
+            "xyz": [
+                2.0,
+                0.0,
+                0.0
+            ],
+            "rpy": [
+                0,
+                0,
+                1.57
             ],
             "object_bridges": [
                 "pose"
