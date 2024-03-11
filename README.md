@@ -17,7 +17,7 @@ In your home directory (could be anywhere else but all the paths below are for y
 ```
 mkdir -p ~/aerostack2_ws/src
 cd ~/aerostack2_ws/src
-git clone https://github.com/mhl787156/aerostack2.git
+git clone https://github.com/mhl787156/aerostack2.git -b robee
 git clone https://github.com/mhl787156/project_pollibee.git
 ```
 
@@ -205,6 +205,8 @@ This can be run both inside tmux, and in any terminal in the right directory and
 Closing Gazbo directly won't stop the simulation. Make sure you do not have more than one simulation going at the same time! 
 
 ### Developing The Application
+
+First check whether you need to git pull from the main repository. And check that your aerostack2 repo is in the `robee` branch (`git branch -l`).
 
 The primary file defining the mission is `mission.py`. 
 
