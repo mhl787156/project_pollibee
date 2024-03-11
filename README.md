@@ -174,6 +174,8 @@ In the tmux tab that first pops up (tab number 5) you can run the mission using
 python3 mission.py -s
 ```
 
+> Note: `./launch_as2.bash -sa`, the `a` option will automatically run `mission.py`. 
+
 And follow the instructions on screen. With any luck the crazyflie (its really small you might have to zoom into gazebo) will takeoff and do something. 
 
 > Note: as of 10/03/2024 the crazyflie model has not been properly tuned. If it's not flying properly, change the file `sim_config/world.json` line 5 (`model_type`) to use `quadrotor_base` instead of crazyflie and it will use one of aerostack2 internal quadcopter models for now. 
@@ -217,6 +219,14 @@ The `sim_config` folder contains all of the configuration files for running the 
 > New models must be setup and placed within the `aerostack2/as2_simulation_assets/as2_gazebo_assets/models` and then `as2 build` to install them. There should exist the `pollibee_flower` object which can be selected as `model_type`
 
 The other configurations are for the different modules and plugins which perform the interaction of the drone and simualtor/real world. 
+
+For visualisation, we can use Foxglove Studio - download the local one [here](https://foxglove.dev/download). You will need to install the bridge:
+```
+sudo apt-get install ros-humble-foxglove-bridge
+```
+You can run it as a standalone application.
+You can then import the layout `foxglove_layout.json` using [these instructions](https://docs.foxglove.dev/docs/visualization/layouts/#import-and-export). 
+Then when the simulator is started using `./launch_as2.bash`, the foxglove-bridge will also autostart and autoconnect to the default connection of `ws:/localhost:8765`
 
 ### Real Crazyflies
 

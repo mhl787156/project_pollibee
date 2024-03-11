@@ -1,0 +1,287 @@
+{
+  "configById": {
+    "Plot!1os1gk2": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/pose.pose.position.x",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/pose.pose.position.y",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/pose.pose.position.z",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 300
+    },
+    "Plot!nsnf9g": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/twist.twist.linear.x",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/gz/cf0/cmd_vel.linear.x",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 300
+    },
+    "Plot!147wyus": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/twist.twist.angular.x",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/gz/cf0/cmd_vel.angular.x",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 300
+    },
+    "Plot!2lm68h7": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/twist.twist.linear.y",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/gz/cf0/cmd_vel.linear.y",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 300
+    },
+    "Plot!34vqin8": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/twist.twist.angular.y",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/gz/cf0/cmd_vel.angular.y",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 300
+    },
+    "Plot!4fauyh7": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/twist.twist.linear.z",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/gz/cf0/cmd_vel.linear.z",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 300
+    },
+    "Plot!2b9857c": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/ground_truth/twist.twist.angular.z",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/gz/cf0/cmd_vel.angular.z",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240,
+      "followingViewWidth": 300
+    },
+    "3D!vslitp": {
+      "cameraState": {
+        "distance": 5.270401889314568,
+        "perspective": true,
+        "phi": 59.99999999999969,
+        "target": [
+          0,
+          0,
+          0
+        ],
+        "targetOffset": [
+          0.9931625622710085,
+          -0.12450725999316144,
+          3.864295894689381e-18
+        ],
+        "targetOrientation": [
+          0,
+          0,
+          0,
+          1
+        ],
+        "thetaOffset": 45.00000000000011,
+        "fovy": 45,
+        "near": 0.5,
+        "far": 5000
+      },
+      "followMode": "follow-pose",
+      "scene": {},
+      "transforms": {
+        "frame:cf0/crazyflie/m1_prop": {
+          "visible": false
+        },
+        "frame:cf0/crazyflie/m2_prop": {
+          "visible": false
+        },
+        "frame:cf0/crazyflie/m3_prop": {
+          "visible": false
+        },
+        "frame:cf0/crazyflie/m4_prop": {
+          "visible": false
+        },
+        "frame:cf0/base_footprint": {
+          "visible": false
+        }
+      },
+      "topics": {},
+      "layers": {},
+      "publish": {
+        "type": "point",
+        "poseTopic": "/move_base_simple/goal",
+        "pointTopic": "/clicked_point",
+        "poseEstimateTopic": "/initialpose",
+        "poseEstimateXDeviation": 0.5,
+        "poseEstimateYDeviation": 0.5,
+        "poseEstimateThetaDeviation": 0.26179939
+      },
+      "imageMode": {}
+    },
+    "Plot!3ybc6kk": {
+      "paths": [
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/actuator_command/thrust.thrust",
+          "enabled": true
+        }
+      ],
+      "showXAxisLabels": true,
+      "showYAxisLabels": true,
+      "showLegend": true,
+      "legendDisplay": "floating",
+      "showPlotValuesInLegend": false,
+      "isSynced": true,
+      "xAxisVal": "timestamp",
+      "sidebarDimension": 240
+    }
+  },
+  "globalVariables": {},
+  "userNodes": {},
+  "playbackConfig": {
+    "speed": 1
+  },
+  "layout": {
+    "first": {
+      "first": "Plot!1os1gk2",
+      "second": {
+        "first": {
+          "first": "Plot!nsnf9g",
+          "second": "Plot!147wyus",
+          "direction": "row"
+        },
+        "second": {
+          "first": {
+            "first": "Plot!2lm68h7",
+            "second": "Plot!34vqin8",
+            "direction": "row"
+          },
+          "second": {
+            "first": "Plot!4fauyh7",
+            "second": "Plot!2b9857c",
+            "direction": "row"
+          },
+          "direction": "column"
+        },
+        "direction": "column",
+        "splitPercentage": 32.42718446601942
+      },
+      "direction": "row",
+      "splitPercentage": 33.180204635623305
+    },
+    "second": {
+      "first": "3D!vslitp",
+      "second": "Plot!3ybc6kk",
+      "direction": "row",
+      "splitPercentage": 54.147795594789784
+    },
+    "direction": "column",
+    "splitPercentage": 54.087638979725305
+  }
+}

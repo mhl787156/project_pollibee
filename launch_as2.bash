@@ -8,10 +8,11 @@ usage() {
     echo "      -r: record rosbag"
     echo "      -t: launch keyboard teleoperation"
     echo "      -n: drone namespace, default is cf0"
+    echo "      -a: auto run mission"
 }
 
 # Arg parser
-while getopts "se:mrtn" opt; do
+while getopts "se:mrtna" opt; do
   case ${opt} in
     s )
       simulated="true"
@@ -30,6 +31,9 @@ while getopts "se:mrtn" opt; do
       ;;
     n )
       drone_namespace="${OPTARG}"
+      ;;
+    a )
+      auto_run="true"
       ;;
     \? )
       echo "Invalid option: -$OPTARG" >&2
@@ -64,6 +68,7 @@ estimator_plugin=${estimator_plugin:="ground_truth"}  # default ign_gz
 record_rosbag=${record_rosbag:="false"}
 launch_keyboard_teleop=${launch_keyboard_teleop:="false"}
 drone_namespace=${drone_namespace:="cf"}
+auto_run=${auto_run:="false"}
 
 if [[ ${swarm} == "true" ]]; then
   num_drones=2
@@ -87,7 +92,7 @@ do
     base_launch="false"
   fi 
 
-  tmuxinator start -n ${ns} -p utils/session.yml drone_namespace=${ns} base_launch=${base_launch}  estimator_plugin=${estimator_plugin} simulation=${simulated} simulation_config=${simulation_config} &
+  tmuxinator start -n ${ns} -p utils/session.yml drone_namespace=${ns} base_launch=${base_launch}  estimator_plugin=${estimator_plugin} simulation=${simulated} simulation_config=${simulation_config} auto_run=${auto_run}&
   wait
 done
 

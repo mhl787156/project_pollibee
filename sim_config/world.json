@@ -6,7 +6,7 @@
             "model_name": "cf0",
             "xyz": [
                 0.0,
-                -1.5,
+                0.0,
                 0.3
             ],
             "rpy": [
@@ -18,22 +18,5 @@
         }
     ],
     "objects": [
-        {
-            "model_type": "aruco_gate_1",
-            "model_name": "gate_0",
-            "xyz": [
-                -1.0,
-                0.0,
-                0.0
-            ],
-            "rpy": [
-                0,
-                0,
-                -1.57
-            ],
-            "object_bridges": [
-                "pose"
-            ]
-        }
     ]
 }

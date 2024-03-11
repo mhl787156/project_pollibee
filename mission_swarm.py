@@ -4,7 +4,7 @@ import sys
 import argparse
 import rclpy
 from as2_python_api.drone_interface import DroneInterface
-from mission import run_mission, shutdown_all
+from mission_obstacle import run_mission, shutdown_all
 
 
 def main():
