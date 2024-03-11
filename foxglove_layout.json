@@ -39,6 +39,11 @@
           "timestampMethod": "receiveTime",
           "value": "/gz/cf0/cmd_vel.linear.x",
           "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/self_localization/twist.twist.linear.x",
+          "enabled": true
         }
       ],
       "showXAxisLabels": true,
@@ -61,6 +66,11 @@
         {
           "timestampMethod": "receiveTime",
           "value": "/gz/cf0/cmd_vel.angular.x",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/self_localization/twist.twist.angular.x",
           "enabled": true
         }
       ],
@@ -85,6 +95,11 @@
           "timestampMethod": "receiveTime",
           "value": "/gz/cf0/cmd_vel.linear.y",
           "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/self_localization/twist.twist.linear.y",
+          "enabled": true
         }
       ],
       "showXAxisLabels": true,
@@ -107,6 +122,11 @@
         {
           "timestampMethod": "receiveTime",
           "value": "/gz/cf0/cmd_vel.angular.y",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/self_localization/twist.twist.angular.y",
           "enabled": true
         }
       ],
@@ -131,6 +151,11 @@
           "timestampMethod": "receiveTime",
           "value": "/gz/cf0/cmd_vel.linear.z",
           "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/self_localization/twist.twist.linear.z",
+          "enabled": true
         }
       ],
       "showXAxisLabels": true,
@@ -153,6 +178,11 @@
         {
           "timestampMethod": "receiveTime",
           "value": "/gz/cf0/cmd_vel.angular.z",
+          "enabled": true
+        },
+        {
+          "timestampMethod": "receiveTime",
+          "value": "/cf0/self_localization/twist.twist.angular.z",
           "enabled": true
         }
       ],
@@ -279,7 +309,7 @@
       "first": "3D!vslitp",
       "second": "Plot!3ybc6kk",
       "direction": "row",
-      "splitPercentage": 54.147795594789784
+      "splitPercentage": 54.05563035980444
     },
     "direction": "column",
     "splitPercentage": 54.087638979725305
