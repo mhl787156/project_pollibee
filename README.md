@@ -180,6 +180,8 @@ And follow the instructions on screen. With any luck the crazyflie (its really s
 
 > Note: as of 10/03/2024 the crazyflie model has not been properly tuned. If it's not flying properly, change the file `sim_config/world.json` line 5 (`model_type`) to use `quadrotor_base` instead of crazyflie and it will use one of aerostack2 internal quadcopter models for now. 
 
+> Note: If you have a non-terminating program you can use Ctrl+C to stop the current program
+
 In this terminal you can also run ROS2 introspection using the ros2 cli tools such as 
 ```bash
 # Introspect current state

@@ -1,69 +1,44 @@
 #!/bin/python3
 
-from time import sleep
-import argparse
+"""
+mission_vel_motion_ref.py
+"""
+
+import time
 import rclpy
+import argparse
 from as2_python_api.drone_interface import DroneInterface
+from as2_python_api.modules.motion_reference_handler_module import MotionReferenceHandlerModule
 
 
-def drone_run(drone_interface: DroneInterface):
-    """ Run the mission """
+class DroneMotionRef(DroneInterface):
+    """Drone interface node with PointGimbalModule."""
 
-    speed = 0.5
-    takeoff_height = 1.0
-    height = 1.0
+    def __init__(self, name, verbose=False, use_sim_time=False):
+        super().__init__(name, verbose, use_sim_time)
 
-    sleep_time = 2.0
+        self.motion_ref_handler = MotionReferenceHandlerModule(drone=self)
 
-    dim = 1.0
-    path = [
-        [-dim, dim, height],
-        [-dim, -dim, height],
-        [dim, -dim, height],
-        [dim, dim, height]
-    ]
-    print("Start mission")
+    def run_test(self):
+        """ Run the mission """
+        self.offboard()
+        self.arm()
 
-    ##### ARM OFFBOARD #####
-    print("Arm")
-    drone_interface.offboard()
-    sleep(sleep_time)
-    print("Offboard")
-    drone_interface.arm()
-    sleep(sleep_time)
+        # Takeoff to 1 meter
+        self.takeoff(1.0, wait=True)
 
-    ##### TAKE OFF #####
-    print("Take Off")
-    drone_interface.takeoff(takeoff_height, speed=1.0)
-    print("Take Off done")
-    # sleep(sleep_time)
+        time.sleep(1.0)
 
-    ##### GO TO #####
-    while True:
-        drone_interface.go_to.go_to_point([2.0, 0.0, 1.0], speed=0.5)
-        print("Flying to 2.0 x")
-        sleep(10)
-        drone_interface.go_to.go_to_point([-2.0, 0.0, 1.0], speed=0.5)
-        print("Flying to -2.0 x")
-        sleep(10)
-    # for goal in path:
-    #     print(f"Go to with path facing {goal}")
-    #     drone_interface.go_to.go_to_point_path_facing(goal, speed=speed)
-    #     print("Go to done")
-    # sleep(sleep_time)
-
-    # ##### LAND #####
-    # print("Landing")
-    # drone_interface.land(speed=0.5)
-    # print("Land done")
-
-    # drone_interface.disarm()
+        while True:
+            # Continuously send 0.5m/s in x direction with 0.0 yaw
+            self.motion_ref_handler.speed.send_speed_command_with_yaw_angle(
+                [0.5, 0.0, 0.0], pose=None, twist_frame_id=f'{self.drone_id}/base_link', yaw_angle=0.0)
+            time.sleep(0.1)
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser(
-        description="Starts gates mission for crazyswarm in either simulation or real environment")
+    description="Starts gates mission for crazyswarm in either simulation or real environment")
     parser.add_argument('-s', '--simulated',
                         action='store_true', default=False)
 
@@ -76,13 +51,11 @@ if __name__ == '__main__':
 
     rclpy.init()
 
-    uav = DroneInterface(drone_id="cf0", verbose=False,
-                         use_sim_time=args.simulated)
-
-    drone_run(uav)
-
+    uav = DroneMotionRef("cf0", verbose=True, use_sim_time=True)
+    uav.run_test()
     uav.shutdown()
     rclpy.shutdown()
 
     print("Clean exit")
     exit(0)
+
