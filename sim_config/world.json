@@ -2,7 +2,7 @@
     "world_name": "empty",
     "drones": [
         {
-            "model_type": "crazyflie",
+            "model_type": "quadrotor_base",
             "model_name": "cf0",
             "xyz": [
                 0.0,
@@ -18,5 +18,22 @@
         }
     ],
     "objects": [
+        {
+            "model_type": "pollibee_flower",
+            "model_name": "flower_0",
+            "xyz": [
+                -2.0,
+                0.0,
+                1.0
+            ],
+            "rpy": [
+                0,
+                1.57,
+                0
+            ],
+            "object_bridges": [
+                "pose"
+            ]
+        }
     ]
 }

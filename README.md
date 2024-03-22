@@ -171,7 +171,7 @@ This will startup a tmux session with multiple tabs to startup the different ROS
 In the tmux tab that first pops up (tab number 5) you can run the mission using
 
 ```
-python3 mission.py -s
+python3 pollibee.py -s
 ```
 
 > Note: `./launch_as2.bash -sa`, the `a` option will automatically run `mission.py`. 
