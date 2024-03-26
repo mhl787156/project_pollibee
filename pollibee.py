@@ -41,7 +41,7 @@ def drone_run(drone_interface: DroneInterface):
     ##### GO TO #####
     # while True:
     print("Flying to 2.0 x")
-    drone_interface.go_to.go_to_point([-1.8, 0.0, 1.0], speed=0.5)
+    drone_interface.go_to.go_to_point([1.8, 0.0, 1.0], speed=0.5)
     sleep(5)
 
     print("Flying to 0 x")
