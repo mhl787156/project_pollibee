@@ -28,9 +28,9 @@
             "model_type": "pollibee_flower",
             "model_name": "flower_0",
             "xyz": [
-                -2.0,
+                -1.5,
                 0.0,
-                1.0
+                1.2
             ],
             "rpy": [
                 0,
@@ -39,24 +39,98 @@
             ],
             "object_bridges": [
                 "pose"
-            ]
+            ],
+            "tf_broadcaster": true
         },
         {
             "model_type": "pollibee_flower",
             "model_name": "flower_1",
             "xyz": [
                 2.0,
-                0.0,
-                1.0
+                -1.0,
+                1.6
             ],
             "rpy": [
                 0,
+                1.57,
+                3.14
+            ],
+            "object_bridges": [
+                "pose"
+            ],
+            "tf_broadcaster": true
+        },
+        {
+            "model_type": "pollibee_flower",
+            "model_name": "flower_2",
+            "xyz": [
+                2.5,
+                1.5,
+                0.8
+            ],
+            "rpy": [
+                0.83,
                 1.57,
                 0
             ],
             "object_bridges": [
                 "pose"
-            ]
+            ],
+            "tf_broadcaster": true
+        },
+        {
+            "model_type": "pollibee_flower",
+            "model_name": "flower_3",
+            "xyz": [
+                1,
+                2.5,
+                1.4
+            ],
+            "rpy": [
+                1.2,
+                1.57,
+                3.14
+            ],
+            "object_bridges": [
+                "pose"
+            ],
+            "tf_broadcaster": true
+        },
+        {
+            "model_type": "pollibee_flower",
+            "model_name": "flower_4",
+            "xyz": [
+                1,
+                -2.5,
+                1.0
+            ],
+            "rpy": [
+                0.2,
+                -1.57,
+                0.4
+            ],
+            "object_bridges": [
+                "pose"
+            ],
+            "tf_broadcaster": true
+        },
+        {
+            "model_type": "pollibee_flower",
+            "model_name": "flower_5",
+            "xyz": [
+                -1.0,
+                -2.0,
+                1.0
+            ],
+            "rpy": [
+                1.57,
+                1.57,
+                2.0
+            ],
+            "object_bridges": [
+                "pose"
+            ],
+            "tf_broadcaster": true
         }
     ]
 }

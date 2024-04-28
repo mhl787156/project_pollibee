@@ -46,6 +46,16 @@ def drone_run(drone_interface: DroneInterface):
         drone_interface.go_to.go_to_point([-2.0, 0.0, 1.0], speed=0.5)
         print("Flying to -2.0 x")
         sleep(10)
+
+    # Example using 
+    # path = [
+    #     [0.3, 0.0, 2.0],
+    #     [-2.0, 0.0, 1.2],
+    #     [2.0, 2.0, 1.5],
+    #     [2.5, 1.5, 0.8],
+    #     [1.0, 0.0, 1.0],
+    # ]
+    # drone_interface.follow_path.follow_path_with_keep_yaw(path, speed=1.0)
     # for goal in path:
     #     print(f"Go to with path facing {goal}")
     #     drone_interface.go_to.go_to_point_path_facing(goal, speed=speed)

@@ -61,9 +61,9 @@ windows:
         - ros2 launch as2_motion_controller controller_launch.py
             namespace:=<%= drone_namespace %>
             use_sim_time:=<%= simulation %>
-            plugin_name:=pid_speed_controller
             motion_controller_config_file:=<%= config_path %>/motion_controller.yaml
-            plugin_config_file:=<%= config_path %>/motion_controller_plugin.yaml     
+            plugin_name:=pid_speed_controller
+            plugin_config_file:=<%= config_path %>/motion_controller_plugin_pid.yaml     
   - behaviors:
       layout:
       panes:

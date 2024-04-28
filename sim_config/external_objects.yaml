@@ -1,9 +1,11 @@
 ---
 objects:
 - type: pose
-  frame: gate_0/link
-  pose_topic: "/gate_0/gate_0/pose"
+  frame: flower_0/link
+  pose_topic: "/flower_0/flower_0/pose"
 - type: pose
-  frame: gate_1/link
-  pose_topic: "/gate_1/gate_1/pose"
-  
+  frame: flower_1/link
+  pose_topic: "/flower_1/flower_1/pose"
+- type: pose
+  frame: flower_2/link
+  pose_topic: "/flower_2/flower_2/pose"
