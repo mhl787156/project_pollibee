@@ -42,7 +42,6 @@ Then, enable the handy aerostack2 cli
 ```
 echo 'export AEROSTACK2_PATH=$HOME/aerostack2_ws/src/aerostack2' >> $HOME/.bashrc
 echo 'source $AEROSTACK2_PATH/as2_cli/setup_env.bash' >> $HOME/.bashrc
-echo 'source $HOME/aerostack2_ws/install/setup.bash' >> $HOME/.bashrc
 source ~/.bashrc
 ```
 
@@ -53,6 +52,13 @@ as2 build
 ```
 
 Now as2 should be installed, now go to the [usage instructions](#usage) section below
+
+> Note if you want the as2 project ot always be available, add the following line to your bashrc
+>
+> ```
+> echo 'source $HOME/aerostack2_ws/install/setup.bash' >> $HOME/.bashrc
+> source ~/.bashrc
+```
 
 > Note that if you want to make changes and push to either `aerostack2` or `project_pollibee` it is recommended that you update the git url in each repository to use the ssh version, and add your ssh key to your github account. 
 >
