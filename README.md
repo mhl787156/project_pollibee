@@ -58,7 +58,7 @@ Now as2 should be installed, now go to the [usage instructions](#usage) section 
 > ```
 > echo 'source $HOME/aerostack2_ws/install/setup.bash' >> $HOME/.bashrc
 > source ~/.bashrc
-```
+>```
 
 > Note that if you want to make changes and push to either `aerostack2` or `project_pollibee` it is recommended that you update the git url in each repository to use the ssh version, and add your ssh key to your github account. 
 >
