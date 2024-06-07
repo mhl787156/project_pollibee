@@ -123,7 +123,7 @@ sudo apt install ros-humble-desktop
 sudo apt install ros-dev-tools
 
 # Auto Source in bashrc to have access to ros2 tools
-echo 'source ~/opt/ros/huble/setup.bash' >> $HOME/.bashrc
+echo 'source ~/opt/ros/humble/setup.bash' >> $HOME/.bashrc
 ```
 
 #### Installing Ignition Gazebo Fortress
