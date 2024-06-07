@@ -31,6 +31,7 @@ sudo apt install git python3-rosdep python3-pip python3-colcon-common-extensions
 And then going back into the root workspace
 ```
 cd ~/aerostack2_ws
+source /opt/ros/humble/setup.bash
 sudo rosdep init
 rosdep update
 rosdep install -y -r -q --from-paths src --ignore-src
